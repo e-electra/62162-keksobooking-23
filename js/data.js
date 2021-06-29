@@ -1,4 +1,4 @@
-import {getRandomIntegerInclusive, getRandomFloatInclusive, getRandomArrayElement, createNewRandomArray} from './util.js'
+import {getRandomIntegerInclusive, getRandomFloatInclusive, getRandomArrayElement, createNewRandomArray} from './util.js';
 
 const TYPE = [
   'palace',
