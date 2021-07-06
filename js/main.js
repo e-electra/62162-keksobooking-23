@@ -1,2 +1,1 @@
-import {getRentalAdertisementsList} from './data.js';
-getRentalAdertisementsList();
+import './advertisements.js';

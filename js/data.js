@@ -29,13 +29,13 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-const SIMILAR_ADVERTISEMENT_COUNT = 10;
+export const SIMILAR_ADVERTISEMENT_COUNT = 10;
 
 const getAvatar = () => {
-  const number = getRandomIntegerInclusive(1, 100);
+  const number = getRandomIntegerInclusive(1, 11);
   const userId = number < 10 ? `0${number}` : number;
 
-  return `img/avatars/user${userId}`;
+  return `img/avatars/user${userId}.png`;
 };
 
 function getLocationCoords() {
@@ -46,7 +46,7 @@ function getLocationCoords() {
 }
 
 
-const getRentalAdertisementsList = () => new Array(SIMILAR_ADVERTISEMENT_COUNT)
+const getRentalAdertisementsList = (count) => new Array(count)
   .fill(null)
   .map(() => ({
     author: {
