@@ -1,11 +1,5 @@
-import {getRentalAdertisementsList} from './data.js';
-
-const mapCanvas = document.querySelector('#map-canvas');
 
 const popupAdvertsTemplate = document.querySelector('#card').content.querySelector('.popup');
-
-const ADVERT_COUNT = 1;
-const similarAdverts = getRentalAdertisementsList(ADVERT_COUNT);
 
 const advertTypes = {
   palace: 'Дворец',
@@ -23,9 +17,7 @@ function renderElement (el, value, added = true) {
   }
 }
 
-const similarListFragment = document.createDocumentFragment();
-
-similarAdverts.forEach((ad) => {
+function createAdvertElement(ad) {
   const advertsElement = popupAdvertsTemplate.cloneNode(true);
 
   renderElement(advertsElement.querySelector('.popup__title'), ad.offer.title);
@@ -82,7 +74,7 @@ similarAdverts.forEach((ad) => {
     advertsElement.querySelector('.popup__avatar').src = ad.author.avatar;
   }
 
-  similarListFragment.appendChild(advertsElement);
-});
+  return advertsElement;
+}
 
-mapCanvas.appendChild(similarListFragment);
+export {createAdvertElement};

@@ -144,6 +144,7 @@ typeSelect.addEventListener('change', setMinPricesOfType);
 timeIn.addEventListener('change', updateTimeOut);
 timeOut.addEventListener('change', updateTimeIn);
 
+
 export {deactivatePage, activatePage};
 
 
