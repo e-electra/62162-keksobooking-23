@@ -6,12 +6,7 @@ const mapFieldset = mapFilters.querySelector('fieldset');
 const mapElements = mapFilters.querySelectorAll('select');
 
 const titleInput = adForm.querySelector('#title');
-const MIN_TITLE_LENGTH = 30;
-const MAX_TITLE_LENGTH = 100;
-
 const priceInput = adForm.querySelector('#price');
-const MIN_PRICE_VALUE = 0;
-const MAX_PRICE_VALUE = 1000000;
 
 const roomsNumber = adForm.querySelector('#room_number');
 const guestsNumber = adForm.querySelector('#capacity');
@@ -20,6 +15,23 @@ const guestsOptions = Array.from(guestsNumber.querySelectorAll('option'))
   .sort((prev, next) => Number(prev.value) - Number(next.value))
   .map((opt) => opt.innerText);
 
+const typeSelect = adForm.querySelector('#type');
+
+const timeIn = adForm.querySelector('#timein');
+const timeOut = adForm.querySelector('#timeout');
+
+const HOUSING_PRICES = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
+
+
+const MAX_PRICE_VALUE = 1000000;
+const MIN_TITLE_LENGTH = 30;
+const MAX_TITLE_LENGTH = 100;
 
 function deactivatePage() {
   adForm.classList.add('ad-form--disabled');
@@ -65,12 +77,19 @@ const validateTitle = (event) => {
   input.reportValidity();
 };
 
+const setMinPricesOfType = (evt) => {
+  priceInput.setAttribute('min', HOUSING_PRICES[evt.target.value]);
+  priceInput.setAttribute('placeholder', HOUSING_PRICES[evt.target.value]);
+};
+
+
 const validatePrice = (event) => {
   const input = event.target;
   const valuePrice = event.target.value;
+  const minPrice = Number(input.getAttribute('min'));
 
-  if (valuePrice < MIN_PRICE_VALUE) {
-    input.setCustomValidity(`Минимальная цена ${MIN_PRICE_VALUE} руб.`);
+  if (valuePrice < minPrice) {
+    input.setCustomValidity(`Минимальная цена ${minPrice} руб.`);
   } else if (valuePrice > MAX_PRICE_VALUE) {
     input.setCustomValidity(`Максимальная цена ${MAX_PRICE_VALUE} руб.`);
   } else {
@@ -108,9 +127,23 @@ const validateGuests = () => {
   }
 };
 
+const updateTimeOut = (evt) => {
+  timeOut.value = evt.target.value;
+};
+
+const updateTimeIn = (evt) => {
+  timeIn.value = evt.target.value;
+};
+
 titleInput.addEventListener('input', validateTitle);
 priceInput.addEventListener('input', validatePrice);
 roomsNumber.addEventListener('change', validateRooms);
 guestsNumber.addEventListener('change', validateGuests);
 
+typeSelect.addEventListener('change', setMinPricesOfType);
+timeIn.addEventListener('change', updateTimeOut);
+timeOut.addEventListener('change', updateTimeIn);
+
 export {deactivatePage, activatePage};
+
+
