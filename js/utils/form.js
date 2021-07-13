@@ -5,6 +5,21 @@ const mapFilters = document.querySelector('.map__filters');
 const mapFieldset = mapFilters.querySelector('fieldset');
 const mapElements = mapFilters.querySelectorAll('select');
 
+const titleInput = adForm.querySelector('#title');
+const MIN_TITLE_LENGTH = 30;
+const MAX_TITLE_LENGTH = 100;
+
+const priceInput = adForm.querySelector('#price');
+const MIN_PRICE_VALUE = 0;
+const MAX_PRICE_VALUE = 1000000;
+
+const roomsNumber = adForm.querySelector('#room_number');
+const guestsNumber = adForm.querySelector('#capacity');
+const guestsOptions = Array.from(guestsNumber.querySelectorAll('option'))
+  .filter((opt) => Number(opt.value) > 0)
+  .sort((prev, next) => Number(prev.value) - Number(next.value))
+  .map((opt) => opt.innerText);
+
 
 function deactivatePage() {
   adForm.classList.add('ad-form--disabled');
@@ -18,7 +33,6 @@ function deactivatePage() {
   mapElements.forEach((element) => {
     element.setAttribute('disabled', true);
   });
-
 }
 
 function activatePage() {
@@ -33,83 +47,70 @@ function activatePage() {
   mapElements.forEach((element) => {
     element.removeAttribute('disabled');
   });
-
 }
 
-export {deactivatePage, activatePage};
-
-const titleInput = adForm.querySelector('#title');
-const MIN_TITLE_LENGTH = 30;
-const MAX_TITLE_LENGTH = 100;
-
-titleInput.addEventListener('input', (event) => {
+// Form validators
+const validateTitle = (event) => {
+  const input = event.target;
   const valueLength = event.target.value.length;
 
   if (valueLength < MIN_TITLE_LENGTH) {
-    titleInput.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - valueLength} симв.`);
+    input.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - valueLength} симв.`);
   } else if (valueLength > MAX_TITLE_LENGTH) {
-    titleInput.setCustomValidity(`Удалите лишние ${valueLength - MAX_TITLE_LENGTH} симв.`);
+    input.setCustomValidity(`Удалите лишние ${valueLength - MAX_TITLE_LENGTH} симв.`);
   } else {
-    titleInput.setCustomValidity('');
+    input.setCustomValidity('');
   }
 
-  titleInput.reportValidity();
-});
+  input.reportValidity();
+};
 
-const priceInput = adForm.querySelector('#price');
-const MIN_PRICE_VALUE = 0;
-const MAX_PRICE_VALUE = 1000000;
-
-priceInput.addEventListener('input', (event) => {
+const validatePrice = (event) => {
+  const input = event.target;
   const valuePrice = event.target.value;
 
   if (valuePrice < MIN_PRICE_VALUE) {
-    priceInput.setCustomValidity(`Минимальная цена ${MIN_PRICE_VALUE} руб.`);
+    input.setCustomValidity(`Минимальная цена ${MIN_PRICE_VALUE} руб.`);
   } else if (valuePrice > MAX_PRICE_VALUE) {
-    priceInput.setCustomValidity(`Максимальная цена ${MAX_PRICE_VALUE} руб.`);
+    input.setCustomValidity(`Максимальная цена ${MAX_PRICE_VALUE} руб.`);
   } else {
-    priceInput.setCustomValidity('');
+    input.setCustomValidity('');
   }
 
-  priceInput.reportValidity();
-});
+  input.reportValidity();
+};
 
-const roomsNumber = adForm.querySelector('#room_number');
-const guestsNumber = adForm.querySelector('#capacity');
-const guestsOptions = Array.from(guestsNumber.querySelectorAll('option'))
-  .filter((opt) => Number(opt.value) > 0)
-  .sort((prev, next) => Number(prev.value) - Number(next.value))
-  .map((opt) => opt.innerText);
-
-const roomsHandler = (value) => {
+const validateRooms = () => {
+  const roomsValue = Number(roomsNumber.value);
   const guestsValue = Number(guestsNumber.value);
 
-  if (value === 100 && guestsValue > 0) {
+  if (roomsValue === 100 && guestsValue > 0) {
     roomsNumber.setCustomValidity(guestsNumber.querySelector('option[value="0"]').innerText);
-  } else if (value < guestsValue) {
+  } else if (roomsValue < guestsValue) {
     roomsNumber.setCustomValidity(
-      guestsOptions.slice(0, value).join(' или\n'),
+      guestsOptions.slice(0, roomsValue).join(' или\n'),
     );
   } else {
     roomsNumber.setCustomValidity('');
   }
 
   roomsNumber.reportValidity();
-
 };
 
-roomsNumber.addEventListener('change', (event) => {
-  roomsHandler(Number(event.target.value));
-});
-
-
-guestsNumber.addEventListener('change', (evt) => {
-  const value = Number(evt.target.value);
+const validateGuests = () => {
+  const guestsValue = Number(guestsNumber.value);
   const roomsValue = Number(roomsNumber.value);
 
-  if (value <= roomsValue) {
+  if (roomsValue < 100 && guestsValue <= roomsValue) {
     roomsNumber.setCustomValidity('');
   } else {
-    roomsHandler(roomsValue);
+    validateRooms();
   }
-});
+};
+
+titleInput.addEventListener('input', validateTitle);
+priceInput.addEventListener('input', validatePrice);
+roomsNumber.addEventListener('change', validateRooms);
+guestsNumber.addEventListener('change', validateGuests);
+
+export {deactivatePage, activatePage};
