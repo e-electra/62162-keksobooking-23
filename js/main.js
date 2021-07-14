@@ -1,4 +1,4 @@
-import {adFormSubmit, adFormReset, deactivatePage} from './utils/form.js';
+import {adFormSubmit, adFormReset, deactivatePage, showSubmitSuccess, showSubmitError} from './utils/form.js';
 import { showAlert } from './util.js';
 import {resetMarker, map, mainPinMarker, initAdvertsOnMap} from './map.js';
 import { getData } from './api.js';
@@ -27,12 +27,32 @@ getData(
   },
 );
 
+function removeMessages() {
+  const successElement = document.querySelector('.success');
+  const errorElement = document.querySelector('.error');
+
+  if (successElement) {
+    successElement.remove();
+  }
+
+  if (errorElement) {
+    errorElement.remove();
+  }
+}
+
+document.body.addEventListener('click', removeMessages);
+document.body.addEventListener('keyup', (event) => {
+  if (event.key === 'Escape') {
+    removeMessages();
+  }
+});
+
 adFormSubmit(
   () => {
-    showAlert('Отправлено!');
+    showSubmitSuccess();
   },
   () => {
-    showAlert('Ошибка отправки!');
+    showSubmitError();
   },
 );
 
