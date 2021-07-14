@@ -1,4 +1,4 @@
-import {getRandomIntegerInclusive, getRandomFloatInclusive, getRandomArrayElement, createNewRandomArray} from './util.js';
+import { getRandomIntegerInclusive, getRandomFloatInclusive, getRandomArrayElement, createNewRandomArray } from './util.js';
 
 const TYPE = [
   'palace',
@@ -68,4 +68,4 @@ const getRentalAdertisementsList = (count) => new Array(count)
     location: getLocationCoords(),
   }));
 
-export {getRentalAdertisementsList};
+export { getRentalAdertisementsList };

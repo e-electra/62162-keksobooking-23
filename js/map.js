@@ -1,9 +1,9 @@
-import {getRentalAdertisementsList} from './data.js';
+//import {getRentalAdertisementsList} from './data.js';
 import {createAdvertElement} from './advertisements.js';
 import {activatePage} from './utils/form.js';
 
 const addressInput = document.querySelector('#address');
-const adverts = getRentalAdertisementsList(7);
+//const adverts = getRentalAdertisementsList(7);
 const CENTER_TOKIO_COORDINATES = {
   lat: 35.689500,
   lng: 139.691710,
@@ -74,13 +74,6 @@ function initMap(mainMarker) {
   ).addTo(mapObj);
 
   mainMarker.addTo(mapObj);
-
-  const markerGroup = L.layerGroup().addTo(mapObj);
-
-  adverts.forEach((advert) => {
-    createMarker(advert, markerGroup);
-  });
-
   mainMarker.on('moveend', () => {
     addressInput.value = getLatLngString(mainMarker.getLatLng());
   });
@@ -88,6 +81,14 @@ function initMap(mainMarker) {
   return mapObj;
 }
 
+const initAdvertsOnMap = (mapObj, adverts) => {
+  const markerGroup = L.layerGroup().addTo(mapObj);
+
+  adverts.forEach((advert) => {
+    createMarker(advert, markerGroup);
+  });
+};
+
 const map = initMap(mainPinMarker);
 
-export {map, mainPinMarker, CENTER_TOKIO_COORDINATES, resetMarker};
+export {map, mainPinMarker, CENTER_TOKIO_COORDINATES, initAdvertsOnMap, resetMarker, getLatLngString};

@@ -40,7 +40,7 @@ function createAdvertElement(ad) {
   const featureListElement = advertsElement.querySelector('.popup__features');
   const featureItem = featureListElement.querySelectorAll('.popup__feature');
 
-  if (ad.offer.features.length) {
+  if (ad.offer.features && ad.offer.features.length) {
     const modifires = ad.offer.features.map((feature) => `popup__feature--${feature}`);
 
     featureItem.forEach((item) => {
@@ -59,7 +59,7 @@ function createAdvertElement(ad) {
   const photoList = advertsElement.querySelector('.popup__photos');
   const photoItem = photoList.querySelector('.popup__photo');
 
-  if (ad.offer.photos.length) {
+  if (ad.offer.photos && ad.offer.photos.length) {
     ad.offer.photos.forEach((photo) => {
       const imageElem = photoItem.cloneNode(true);
       imageElem.src = photo;
