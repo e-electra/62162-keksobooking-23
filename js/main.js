@@ -1,7 +1,7 @@
-import {adFormSubmit, adFormReset, deactivatePage, showSubmitSuccess, showSubmitError} from './utils/form.js';
-import { showAlert } from './util.js';
+import {adFormSubmit, adFormReset, deactivatePage} from './utils/form.js';
 import {resetMarker, map, mainPinMarker, initAdvertsOnMap} from './map.js';
 import { getData } from './api.js';
+import {showSubmitSuccess, showSubmitError, showDataLoadError, removeNotifications} from './notifications.js';
 
 const submitButton = document.querySelector('.ad-form__submit');
 const resetButton = document.querySelector('.ad-form__reset');
@@ -23,27 +23,14 @@ getData(
     initAdvertsOnMap(map, adverts);
   },
   () => {
-    showAlert('Не удалось загрузить похожие объявления', 5000);
+    showDataLoadError('Не удалось загрузить похожие объявления', 5000);
   },
 );
 
-function removeMessages() {
-  const successElement = document.querySelector('.success');
-  const errorElement = document.querySelector('.error');
-
-  if (successElement) {
-    successElement.remove();
-  }
-
-  if (errorElement) {
-    errorElement.remove();
-  }
-}
-
-document.body.addEventListener('click', removeMessages);
+document.body.addEventListener('click', removeNotifications);
 document.body.addEventListener('keyup', (event) => {
   if (event.key === 'Escape') {
-    removeMessages();
+    removeNotifications();
   }
 });
 

@@ -26,10 +26,6 @@ const timeOut = adForm.querySelector('#timeout');
 const featuresCheckboxGroup = adForm.querySelector('#features');
 const descriptionTextarea = adForm.querySelector('#description');
 const addressInput = adForm.querySelector('#address');
-const resetButton = document.querySelector('.ad-form__reset');
-
-const submitSuccessTemplate = document.querySelector('#success');
-const submitErrorTemplate = document.querySelector('#error');
 
 const HOUSING_PRICES = {
   bungalow: 0,
@@ -191,28 +187,8 @@ function adFormReset() {
   });
 }
 
-function showSubmitSuccess() {
-  const successElement = submitSuccessTemplate.content.cloneNode(true);
-  const fragment = document.createDocumentFragment();
 
-  fragment.appendChild(successElement);
 
-  document.body.appendChild(fragment);
-}
-
-function showSubmitError() {
-  const errorElement = submitErrorTemplate.content.cloneNode(true);
-  const fragment = document.createDocumentFragment();
-
-  fragment.appendChild(errorElement);
-
-  document.body.appendChild(fragment);
-}
-
-resetButton.addEventListener('click', () => {
-  adForm.reset();
-});
-
-export {deactivatePage, activatePage, adFormSubmit, adFormReset, showSubmitSuccess, showSubmitError};
+export {deactivatePage, activatePage, adFormSubmit, adFormReset};
 
 
