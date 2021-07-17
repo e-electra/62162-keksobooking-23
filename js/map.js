@@ -1,9 +1,8 @@
-//import {getRentalAdertisementsList} from './data.js';
 import {createAdvertElement} from './advertisements.js';
 import {activatePage} from './utils/form.js';
 
 const addressInput = document.querySelector('#address');
-//const adverts = getRentalAdertisementsList(7);
+
 const CENTER_TOKIO_COORDINATES = {
   lat: 35.689500,
   lng: 139.691710,
