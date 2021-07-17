@@ -1,5 +1,6 @@
 import {createAdvertElement} from './advertisements.js';
 import {activatePage} from './utils/form.js';
+import {throttle} from './utils/throttle.js';
 
 const addressInput = document.querySelector('#address');
 
@@ -80,14 +81,24 @@ function initMap(mainMarker) {
   return mapObj;
 }
 
-const initAdvertsOnMap = (mapObj, adverts) => {
-  const markerGroup = L.layerGroup().addTo(mapObj);
+const createMarkerGroup = (mapObj) => {
+  const group = L.layerGroup().addTo(mapObj);
+  return group;
+};
 
+const initAdvertsOnMap = (mGroup, adverts) => {
   adverts.forEach((advert) => {
-    createMarker(advert, markerGroup);
+    createMarker(advert, mGroup);
   });
 };
 
-const map = initMap(mainPinMarker);
+const updateFilteredMarkers = throttle((mGroup, adverts) => {
+  mGroup.clearLayers();
+  initAdvertsOnMap(mGroup, adverts);
+}, 500);
 
-export {map, mainPinMarker, CENTER_TOKIO_COORDINATES, initAdvertsOnMap, resetMarker, getLatLngString};
+
+const map = initMap(mainPinMarker);
+const markerGroup = createMarkerGroup(map);
+
+export {map, mainPinMarker, CENTER_TOKIO_COORDINATES, markerGroup, initAdvertsOnMap, updateFilteredMarkers, resetMarker, getLatLngString};
