@@ -16,26 +16,26 @@ const housingGuestsFilter = filtersForm.querySelector('#housing-guests');
 const housingFeaturesFilter = filtersForm.querySelector('#housing-features');
 
 
-const filterByHousingType = (event) => {
+const onChangeHousingTypeFilter = (event) => {
   const value = event.target.value;
   FILTERS_VALUES_STATE.housingType = value;
 };
 
-const filterByHousingPrice = (event) => {
+const onChangeHousingPriceFilter = (event) => {
   FILTERS_VALUES_STATE.housingPrice = event.target.value;
 };
 
-const filterByHousingRooms = (event) => {
+const onChangeHousingRoomsFilter = (event) => {
   const value = event.target.value !== 'any' ? Number(event.target.value) : event.target.value;
   FILTERS_VALUES_STATE.housingRooms = value;
 };
 
-const filterByHousingGuests = (event) => {
+const onChangeHousingGuestsFilter = (event) => {
   const value = event.target.value !== 'any' ? Number(event.target.value) : event.target.value;
   FILTERS_VALUES_STATE.housingGuests = value;
 };
 
-const filterByFeature = (event) => {
+const onChangeFeatureFilter = (event) => {
   const isChecked = event.target.checked;
   const value = event.target.value;
   const valueIdx = FILTERS_VALUES_STATE.housingFeatures.indexOf(value);
@@ -48,26 +48,26 @@ const filterByFeature = (event) => {
 };
 
 const setHousingTypeFilter = () => {
-  housingTypeFilter.addEventListener('change', filterByHousingType);
+  housingTypeFilter.addEventListener('change', onChangeHousingTypeFilter);
 };
 
 const setHousingPriceFilter = () => {
-  housingPriceFilter.addEventListener('change', filterByHousingPrice);
+  housingPriceFilter.addEventListener('change', onChangeHousingPriceFilter);
 };
 
 const setHousingRoomsFilter = () => {
-  housingRoomsFilter.addEventListener('change', filterByHousingRooms);
+  housingRoomsFilter.addEventListener('change', onChangeHousingRoomsFilter);
 };
 
 const setHousingGuestsFilter = () => {
-  housingGuestsFilter.addEventListener('change', filterByHousingGuests);
+  housingGuestsFilter.addEventListener('change', onChangeHousingGuestsFilter);
 };
 
 const setFeaturesFilter = () => {
   const checkBoxGroup = housingFeaturesFilter.querySelectorAll('input[type="checkbox"]');
 
   checkBoxGroup.forEach((checkBox) => {
-    checkBox.addEventListener('change', filterByFeature);
+    checkBox.addEventListener('change', onChangeFeatureFilter);
   });
 };
 
@@ -82,12 +82,14 @@ const initFilters = () => {
 const filterAdverts = (adverts) => {
   const {housingType, housingPrice, housingRooms, housingGuests, housingFeatures} = FILTERS_VALUES_STATE;
 
-  return adverts.filter((adv) => {
+  const filterByType = (adv) => {
     if (housingType !== 'any') {
       return adv.offer.type === housingType;
     }
     return true;
-  }).filter((adv) => {
+  };
+
+  const filterByPrice = (adv) => {
     if (housingPrice !== 'any') {
       if (housingPrice === 'low') {
         return adv.offer.price < MIN_HOUSING_PRICE;
@@ -99,23 +101,36 @@ const filterAdverts = (adverts) => {
       return  adv.offer.price >= MAX_HOUSING_PRICE;
     }
     return true;
-  }).filter((adv) => {
+  };
+
+  const filterByRooms = (adv) => {
     if (housingRooms !== 'any') {
       return adv.offer.rooms === housingRooms;
     }
     return true;
-  }).filter((adv) => {
+  };
+
+  const filterByGuests = (adv) => {
     if (housingGuests !== 'any') {
       return adv.offer.guests === housingGuests;
     }
 
     return true;
-  }).filter((adv) => {
+  };
+
+  const filterByFeatures = (adv) => {
     if (housingFeatures.length > 0) {
       return (adv.offer.features || []).some((feat) => housingFeatures.includes(feat));
     }
     return true;
-  });
+  };
+
+
+  return adverts.filter((adv) => filterByType(adv)
+    && filterByPrice(adv)
+    && filterByRooms(adv)
+    && filterByGuests(adv)
+    && filterByFeatures(adv));
 };
 
 export {filtersForm, initFilters, filterAdverts};
