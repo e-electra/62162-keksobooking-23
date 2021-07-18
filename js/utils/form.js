@@ -1,6 +1,8 @@
 
 import { mainPinMarker, map, resetMarker, getLatLngString} from '../map.js';
 import { sendData } from './../api.js';
+import {PHOTO_FILE_ALLOWED_TYPES, AUTHOR_PHOTO_IMG_PLACEHOLDER} from '../data.js';
+import { createImageForPreview, updateImageSrc } from './images.js';
 
 const adForm = document.querySelector('.ad-form');
 const formElements = adForm.querySelectorAll('fieldset');
@@ -26,6 +28,11 @@ const timeOut = adForm.querySelector('#timeout');
 const featuresCheckboxGroup = adForm.querySelector('#features');
 const descriptionTextarea = adForm.querySelector('#description');
 const addressInput = adForm.querySelector('#address');
+const housePhotoInput = adForm.querySelector('#images');
+const housePhotoPreview = adForm.querySelector('.ad-form__photo');
+
+const authorPhotoInput = adForm.querySelector('#avatar');
+const authorPhotoPreview = adForm.querySelector('.ad-form-header__preview');
 
 const HOUSING_PRICES = {
   bungalow: 0,
@@ -39,6 +46,9 @@ const HOUSING_PRICES = {
 const MAX_PRICE_VALUE = 1000000;
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
+
+const HOUSE_PHOTO_IMG_ID = 'house-photo-image';
+const AUTHOR_PHOTO_IMG_ID = 'author-photo-image';
 
 function deactivatePage() {
   adForm.classList.add('ad-form--disabled');
@@ -123,6 +133,7 @@ const validateRooms = () => {
   roomsNumber.reportValidity();
 };
 
+
 const validateGuests = () => {
   const guestsValue = Number(guestsNumber.value);
   const roomsValue = Number(roomsNumber.value);
@@ -134,6 +145,21 @@ const validateGuests = () => {
   }
 };
 
+const updatePhotoPreview = (file, id, container) => {
+  const img = createImageForPreview(id, container);
+  updateImageSrc(file, img);
+};
+
+const validatePhoto = (file, input) => {
+  if (!PHOTO_FILE_ALLOWED_TYPES.includes(file.type)) {
+    input.setCustomValidity('Только файлы .jpg или .png');
+    return false;
+  } else {
+    input.setCustomValidity('');
+    return true;
+  }
+};
+
 const updateTimeOut = (evt) => {
   timeOut.value = evt.target.value;
 };
@@ -141,6 +167,37 @@ const updateTimeOut = (evt) => {
 const updateTimeIn = (evt) => {
   timeIn.value = evt.target.value;
 };
+
+const resetPhotoPreview = (container, id, src = '') => {
+  const previewImg = container.getElementById(id);
+  if (previewImg) {
+    previewImg.src = src;
+    previewImg.width = 40;
+    previewImg.height = 44;
+  }
+};
+
+housePhotoInput.addEventListener('change', (event) => {
+  const file = event.target.files[0];
+  const isFileValid = validatePhoto(file, event.target);
+
+  if (isFileValid) {
+    updatePhotoPreview(event.target.files[0], HOUSE_PHOTO_IMG_ID, housePhotoPreview);
+  } else {
+    resetPhotoPreview(housePhotoPreview, HOUSE_PHOTO_IMG_ID);
+  }
+});
+
+authorPhotoInput.addEventListener('change', (event) => {
+  const file = event.target.files[0];
+  const isFileValid = validatePhoto(file, event.target);
+
+  if (isFileValid) {
+    updatePhotoPreview(event.target.files[0], AUTHOR_PHOTO_IMG_ID, authorPhotoPreview);
+  } else {
+    resetPhotoPreview(authorPhotoPreview, AUTHOR_PHOTO_IMG_ID, AUTHOR_PHOTO_IMG_PLACEHOLDER);
+  }
+});
 
 titleInput.addEventListener('input', validateTitle);
 priceInput.addEventListener('input', validatePrice);
@@ -150,7 +207,6 @@ guestsNumber.addEventListener('change', validateGuests);
 typeSelect.addEventListener('change', setMinPricesOfType);
 timeIn.addEventListener('change', updateTimeOut);
 timeOut.addEventListener('change', updateTimeIn);
-
 
 function adFormSubmit(onSuccess, onFail) {
   adForm.addEventListener('submit', (evt) => {
@@ -170,6 +226,10 @@ function adFormSubmit(onSuccess, onFail) {
 function adFormReset() {
   adForm.addEventListener('reset', (event) => {
     event.preventDefault();
+
+    const authorPreviewImg = document.getElementById(AUTHOR_PHOTO_IMG_ID);
+    const housePhotoPreviewImg = document.getElementById(HOUSE_PHOTO_IMG_ID);
+
     titleInput.value = '';
     priceInput.value = '';
     priceInput.setAttribute('placeholcer', HOUSING_PRICES.house);
@@ -182,6 +242,11 @@ function adFormReset() {
     featuresCheckboxGroup.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
       checkbox.checked = false;
     });
+    housePhotoInput.value = '';
+    authorPhotoInput.value = '';
+    authorPreviewImg.src = AUTHOR_PHOTO_IMG_PLACEHOLDER;
+    housePhotoPreviewImg.src = '';
+
     resetMarker(mainPinMarker, map);
     addressInput.value = getLatLngString(mainPinMarker.getLatLng());
   });
