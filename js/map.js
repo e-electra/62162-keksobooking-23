@@ -1,5 +1,5 @@
 import {createAdvertElement} from './advertisements.js';
-import {activatePage} from './utils/form.js';
+import {activatePage} from './form.js';
 import {throttle} from './utils/throttle.js';
 
 const addressInput = document.querySelector('#address');

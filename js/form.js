@@ -1,8 +1,9 @@
 
-import { mainPinMarker, map, resetMarker, getLatLngString} from '../map.js';
-import { sendData } from './../api.js';
-import {PHOTO_FILE_ALLOWED_TYPES, AUTHOR_PHOTO_IMG_PLACEHOLDER} from '../data.js';
-import { createImageForPreview, updateImageSrc } from './images.js';
+import { mainPinMarker, map, resetMarker, getLatLngString} from './map.js';
+import { sendData } from './api.js';
+import {PHOTO_FILE_ALLOWED_TYPES, AUTHOR_PHOTO_IMG_PLACEHOLDER} from './data.js';
+import { createImageForPreview, updateImageSrc } from './utils/images.js';
+import {resetFilters} from './filters.js';
 
 const adForm = document.querySelector('.ad-form');
 const formElements = adForm.querySelectorAll('fieldset');
@@ -245,10 +246,15 @@ function adFormReset() {
     housePhotoInput.value = '';
     authorPhotoInput.value = '';
     authorPreviewImg.src = AUTHOR_PHOTO_IMG_PLACEHOLDER;
-    housePhotoPreviewImg.src = '';
+
+    if (housePhotoPreviewImg) {
+      housePhotoPreviewImg.src = '';
+    }
 
     resetMarker(mainPinMarker, map);
     addressInput.value = getLatLngString(mainPinMarker.getLatLng());
+
+    resetFilters();
   });
 }
 

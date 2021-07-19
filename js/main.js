@@ -1,9 +1,9 @@
-import {adFormSubmit, adFormReset, deactivatePage} from './utils/form.js';
+import {adFormSubmit, adFormReset, deactivatePage} from './form.js';
 import {resetMarker, map, markerGroup, mainPinMarker, initAdvertsOnMap, updateFilteredMarkers} from './map.js';
 import { getData } from './api.js';
 import {showSubmitSuccess, showSubmitError, showDataLoadError, removeNotifications} from './notifications.js';
 import { ADVERTISEMENTS_STATE, SIMILAR_ADVERTISEMENT_COUNT } from './data.js';
-import { initFilters, filterAdverts, filtersForm } from './filters.js';
+import { initFilters, filterAdverts, filtersForm, resetFilters } from './filters.js';
 
 const submitButton = document.querySelector('.ad-form__submit');
 const resetButton = document.querySelector('.ad-form__reset');
@@ -40,6 +40,7 @@ document.body.addEventListener('keyup', (event) => {
 adFormSubmit(
   () => {
     showSubmitSuccess();
+    resetFilters();
   },
   () => {
     showSubmitError();

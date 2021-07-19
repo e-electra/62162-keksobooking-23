@@ -14,7 +14,7 @@ const housingPriceFilter = filtersForm.querySelector('#housing-price');
 const housingRoomsFilter = filtersForm.querySelector('#housing-rooms');
 const housingGuestsFilter = filtersForm.querySelector('#housing-guests');
 const housingFeaturesFilter = filtersForm.querySelector('#housing-features');
-
+const housingFeaturesCheckBoxGroup = housingFeaturesFilter.querySelectorAll('input[type="checkbox"]');
 
 const onChangeHousingTypeFilter = (event) => {
   const value = event.target.value;
@@ -64,9 +64,7 @@ const setHousingGuestsFilter = () => {
 };
 
 const setFeaturesFilter = () => {
-  const checkBoxGroup = housingFeaturesFilter.querySelectorAll('input[type="checkbox"]');
-
-  checkBoxGroup.forEach((checkBox) => {
+  housingFeaturesCheckBoxGroup.forEach((checkBox) => {
     checkBox.addEventListener('change', onChangeFeatureFilter);
   });
 };
@@ -77,6 +75,24 @@ const initFilters = () => {
   setHousingRoomsFilter();
   setHousingGuestsFilter();
   setFeaturesFilter();
+};
+
+const resetFilters = () => {
+  FILTERS_VALUES_STATE.housingType = 'any';
+  FILTERS_VALUES_STATE.housingPrice = 'any';
+  FILTERS_VALUES_STATE.housingRooms = 'any';
+  FILTERS_VALUES_STATE.housingGuests = 'any';
+  FILTERS_VALUES_STATE.housingFeatures = [];
+
+  housingTypeFilter.value = 'any';
+  housingPriceFilter.value = 'any';
+  housingRoomsFilter.value = 'any';
+  housingGuestsFilter.value = 'any';
+  housingFeaturesCheckBoxGroup.forEach((checkBox) => {
+    checkBox.checked = false;
+  });
+
+  filtersForm.dispatchEvent(new Event('change'));
 };
 
 const filterAdverts = (adverts) => {
@@ -133,4 +149,4 @@ const filterAdverts = (adverts) => {
     && filterByFeatures(adv));
 };
 
-export {filtersForm, initFilters, filterAdverts};
+export {filtersForm, initFilters, filterAdverts, resetFilters};
