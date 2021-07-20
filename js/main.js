@@ -12,14 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
   deactivatePage();
 });
 
-submitButton.addEventListener('click', () => {
-  resetMarker(mainPinMarker, map);
-});
-
-resetButton.addEventListener('click', () => {
-  resetMarker(mainPinMarker, map);
-});
-
 getData(
   (adverts) => {
     ADVERTISEMENTS_STATE.advertisements = adverts.slice(0, SIMILAR_ADVERTISEMENT_COUNT);
@@ -34,6 +26,7 @@ adFormSubmit(
   () => {
     showSubmitSuccess();
     resetFilters();
+    resetMarker(mainPinMarker, map);
   },
   () => {
     showSubmitError();

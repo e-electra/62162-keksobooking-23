@@ -257,8 +257,7 @@ const adFormReset = () => {
 
     resetFilters();
   });
-}
-
+};
 
 export {deactivatePage, activatePage, adFormSubmit, adFormReset};
 
