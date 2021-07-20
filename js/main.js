@@ -30,13 +30,6 @@ getData(
   },
 );
 
-document.body.addEventListener('click', removeNotifications);
-document.body.addEventListener('keyup', (event) => {
-  if (event.key === 'Escape') {
-    removeNotifications();
-  }
-});
-
 adFormSubmit(
   () => {
     showSubmitSuccess();

@@ -1,36 +1,37 @@
 const submitSuccessTemplate = document.querySelector('#success');
 const submitErrorTemplate = document.querySelector('#error');
 
-function removeNotifications() {
+function removeNotifications(event) {
   const successElement = document.querySelector('.success');
   const errorElement = document.querySelector('.error');
+  const isClickOrEscape = event.type === 'click' || event.key === 'Escape';
 
-  if (successElement) {
+  if (successElement && isClickOrEscape) {
     successElement.remove();
   }
 
-  if (errorElement) {
+  if (errorElement && isClickOrEscape) {
     errorElement.remove();
   }
+
+  document.body.removeEventListener('keyup', removeNotifications);
 }
 
 
 function showSubmitSuccess() {
   const successElement = submitSuccessTemplate.content.cloneNode(true);
-  const fragment = document.createDocumentFragment();
+  const mounted = document.body.appendChild(successElement.firstElementChild);
 
-  fragment.appendChild(successElement);
-
-  document.body.appendChild(fragment);
+  mounted.addEventListener('click', removeNotifications);
+  document.body.addEventListener('keyup', removeNotifications);
 }
 
 function showSubmitError() {
   const errorElement = submitErrorTemplate.content.cloneNode(true);
-  const fragment = document.createDocumentFragment();
+  const mounted = document.body.appendChild(errorElement.firstElementChild);
 
-  fragment.appendChild(errorElement);
-
-  document.body.appendChild(fragment);
+  mounted.addEventListener('click', removeNotifications);
+  document.body.addEventListener('keyup', removeNotifications);
 }
 
 function showDataLoadError(message, timeout) {
