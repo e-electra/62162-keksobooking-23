@@ -35,21 +35,8 @@ function getRandomArrayElement(elements) {
   return elements[getRandomIntegerInclusive(0, elements.length - 1)];
 }
 
-function createNewRandomArray(array) {
-  const shuffleArray = () => {
-    for (let idx = array.length - 1; idx > 0; idx--) {
-      const nextIdx = Math.floor(Math.random() * (idx + 1));
-      [array[idx], array[nextIdx]] = [array[nextIdx], array[idx]];
-    }
-    return array;
-  };
-
-  return shuffleArray().slice(getRandomIntegerInclusive(0,array.length - 1));
-}
-
 export {
   getRandomIntegerInclusive,
   getRandomFloatInclusive,
-  getRandomArrayElement,
-  createNewRandomArray
+  getRandomArrayElement
 };
