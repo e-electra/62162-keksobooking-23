@@ -51,7 +51,7 @@ const MAX_TITLE_LENGTH = 100;
 const HOUSE_PHOTO_IMG_ID = 'house-photo-image';
 const AUTHOR_PHOTO_IMG_ID = 'author-photo-image';
 
-function deactivatePage() {
+const deactivatePage = () => {
   adForm.classList.add('ad-form--disabled');
   mapFilters.classList.add('map__filters--disabled');
   mapFieldset.setAttribute('disabled', true);
@@ -63,9 +63,9 @@ function deactivatePage() {
   mapElements.forEach((element) => {
     element.setAttribute('disabled', true);
   });
-}
+};
 
-function activatePage() {
+const activatePage = () => {
   adForm.classList.remove('ad-form--disabled');
   mapFilters.classList.remove('map__filters--disabled');
   mapFieldset.removeAttribute('disabled');
@@ -77,10 +77,10 @@ function activatePage() {
   mapElements.forEach((element) => {
     element.removeAttribute('disabled');
   });
-}
+};
 
 // Form validators
-const validateTitle = (event) => {
+const onChangeTitle = (event) => {
   const input = event.target;
   const valueLength = event.target.value.length;
 
@@ -95,13 +95,12 @@ const validateTitle = (event) => {
   input.reportValidity();
 };
 
-const setMinPricesOfType = (evt) => {
+const onChangeType = (evt) => {
   priceInput.setAttribute('min', HOUSING_PRICES[evt.target.value]);
   priceInput.setAttribute('placeholder', HOUSING_PRICES[evt.target.value]);
 };
 
-
-const validatePrice = (event) => {
+const onChangePrice = (event) => {
   const input = event.target;
   const valuePrice = event.target.value;
   const minPrice = Number(input.getAttribute('min'));
@@ -117,7 +116,7 @@ const validatePrice = (event) => {
   input.reportValidity();
 };
 
-const validateRooms = () => {
+const onChangeRooms = () => {
   const roomsValue = Number(roomsNumber.value);
   const guestsValue = Number(guestsNumber.value);
 
@@ -134,21 +133,23 @@ const validateRooms = () => {
   roomsNumber.reportValidity();
 };
 
-
-const validateGuests = () => {
+const onChangeGuests = () => {
   const guestsValue = Number(guestsNumber.value);
   const roomsValue = Number(roomsNumber.value);
 
   if (roomsValue < 100 && guestsValue > 0 && guestsValue <= roomsValue) {
     roomsNumber.setCustomValidity('');
   } else {
-    validateRooms();
+    onChangeRooms();
   }
 };
 
-const updatePhotoPreview = (file, id, container) => {
-  const img = createImageForPreview(id, container);
-  updateImageSrc(file, img);
+const onChangeTimeOut = (evt) => {
+  timeOut.value = evt.target.value;
+};
+
+const onChangeTimeIn = (evt) => {
+  timeIn.value = evt.target.value;
 };
 
 const validatePhoto = (file, input) => {
@@ -161,12 +162,9 @@ const validatePhoto = (file, input) => {
   }
 };
 
-const updateTimeOut = (evt) => {
-  timeOut.value = evt.target.value;
-};
-
-const updateTimeIn = (evt) => {
-  timeIn.value = evt.target.value;
+const updatePhotoPreview = (file, id, container) => {
+  const img = createImageForPreview(id, container);
+  updateImageSrc(file, img);
 };
 
 const resetPhotoPreview = (container, id, src = '') => {
@@ -178,7 +176,7 @@ const resetPhotoPreview = (container, id, src = '') => {
   }
 };
 
-housePhotoInput.addEventListener('change', (event) => {
+const onChangeHousePhoto = (event) => {
   const file = event.target.files[0];
   const isFileValid = validatePhoto(file, event.target);
 
@@ -187,9 +185,9 @@ housePhotoInput.addEventListener('change', (event) => {
   } else {
     resetPhotoPreview(housePhotoPreview, HOUSE_PHOTO_IMG_ID);
   }
-});
+};
 
-authorPhotoInput.addEventListener('change', (event) => {
+const onChangeAuthorPhoto = (event) => {
   const file = event.target.files[0];
   const isFileValid = validatePhoto(file, event.target);
 
@@ -198,18 +196,21 @@ authorPhotoInput.addEventListener('change', (event) => {
   } else {
     resetPhotoPreview(authorPhotoPreview, AUTHOR_PHOTO_IMG_ID, AUTHOR_PHOTO_IMG_PLACEHOLDER);
   }
-});
+};
 
-titleInput.addEventListener('input', validateTitle);
-priceInput.addEventListener('input', validatePrice);
-roomsNumber.addEventListener('change', validateRooms);
-guestsNumber.addEventListener('change', validateGuests);
+housePhotoInput.addEventListener('change', onChangeHousePhoto);
+authorPhotoInput.addEventListener('change', onChangeAuthorPhoto);
 
-typeSelect.addEventListener('change', setMinPricesOfType);
-timeIn.addEventListener('change', updateTimeOut);
-timeOut.addEventListener('change', updateTimeIn);
+titleInput.addEventListener('input', onChangeTitle);
+priceInput.addEventListener('input', onChangePrice);
+roomsNumber.addEventListener('change', onChangeRooms);
+guestsNumber.addEventListener('change', onChangeGuests);
 
-function adFormSubmit(onSuccess, onFail) {
+typeSelect.addEventListener('change', onChangeType);
+timeIn.addEventListener('change', onChangeTimeOut);
+timeOut.addEventListener('change', onChangeTimeIn);
+
+const adFormSubmit = (onSuccess, onFail) => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
@@ -222,9 +223,9 @@ function adFormSubmit(onSuccess, onFail) {
       new FormData(evt.target),
     );
   });
-}
+};
 
-function adFormReset() {
+const adFormReset = () => {
   adForm.addEventListener('reset', (event) => {
     event.preventDefault();
 

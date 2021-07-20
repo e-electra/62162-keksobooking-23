@@ -1,4 +1,4 @@
-function getData(onSuccess, onFail) {
+const getData = (onSuccess, onFail) => {
   fetch('https://23.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
     .then((adverts) => {
@@ -7,9 +7,9 @@ function getData(onSuccess, onFail) {
     .catch((err) => {
       onFail(err);
     });
-}
+};
 
-function sendData(onSuccess, onFail, body) {
+const sendData = (onSuccess, onFail, body) => {
   fetch('https://23.javascript.pages.academy/keksobooking', {
     method: 'POST',
     body,
@@ -22,6 +22,6 @@ function sendData(onSuccess, onFail, body) {
   }).catch(() => {
     onFail();
   });
-}
+};
 
 export {getData, sendData};

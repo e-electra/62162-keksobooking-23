@@ -1,7 +1,7 @@
 const submitSuccessTemplate = document.querySelector('#success');
 const submitErrorTemplate = document.querySelector('#error');
 
-function removeNotifications(event) {
+const onNotificationClickOrEscape = (event) => {
   const successElement = document.querySelector('.success');
   const errorElement = document.querySelector('.error');
   const isClickOrEscape = event.type === 'click' || event.key === 'Escape';
@@ -14,27 +14,27 @@ function removeNotifications(event) {
     errorElement.remove();
   }
 
-  document.body.removeEventListener('keyup', removeNotifications);
-}
+  document.body.removeEventListener('keyup', onNotificationClickOrEscape);
+};
 
 
-function showSubmitSuccess() {
+const showSubmitSuccess = () => {
   const successElement = submitSuccessTemplate.content.cloneNode(true);
   const mounted = document.body.appendChild(successElement.firstElementChild);
 
-  mounted.addEventListener('click', removeNotifications);
-  document.body.addEventListener('keyup', removeNotifications);
-}
+  mounted.addEventListener('click', onNotificationClickOrEscape);
+  document.body.addEventListener('keyup', onNotificationClickOrEscape);
+};
 
-function showSubmitError() {
+const showSubmitError = () => {
   const errorElement = submitErrorTemplate.content.cloneNode(true);
   const mounted = document.body.appendChild(errorElement.firstElementChild);
 
-  mounted.addEventListener('click', removeNotifications);
-  document.body.addEventListener('keyup', removeNotifications);
-}
+  mounted.addEventListener('click', onNotificationClickOrEscape);
+  document.body.addEventListener('keyup', onNotificationClickOrEscape);
+};
 
-function showDataLoadError(message, timeout) {
+const showDataLoadError = (message, timeout) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
   alertContainer.style.position = 'absolute';
@@ -54,6 +54,6 @@ function showDataLoadError(message, timeout) {
   setTimeout(() => {
     alertContainer.remove();
   }, timeout);
-}
+};
 
-export {removeNotifications, showSubmitSuccess, showSubmitError, showDataLoadError};
+export {showSubmitSuccess, showSubmitError, showDataLoadError};

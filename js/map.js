@@ -49,16 +49,14 @@ const createMarker = (advert, group) => {
     );
 };
 
-function getLatLngString(latLng) {
-  return `${latLng.lat.toFixed(5)} ${latLng.lng.toFixed(5)}`;
-}
+const getLatLngString = (latLng) => `${latLng.lat.toFixed(5)} ${latLng.lng.toFixed(5)}`;
 
-function resetMarker (mainMarker, mapObj) {
+const resetMarker = (mainMarker, mapObj) => {
   mainMarker.setLatLng(CENTER_TOKIO_COORDINATES);
   mapObj.setView(CENTER_TOKIO_COORDINATES, 13);
-}
+};
 
-function initMap(mainMarker) {
+const initMap = (mainMarker) => {
   const mapObj = L.map('map-canvas').on('load', () => {
     setTimeout(() => {
       activatePage();
@@ -79,7 +77,7 @@ function initMap(mainMarker) {
   });
 
   return mapObj;
-}
+};
 
 const createMarkerGroup = (mapObj) => {
   const group = L.layerGroup().addTo(mapObj);

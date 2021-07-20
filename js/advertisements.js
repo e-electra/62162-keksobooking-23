@@ -1,4 +1,3 @@
-
 const popupAdvertsTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const advertTypes = {
@@ -9,15 +8,15 @@ const advertTypes = {
   hotel: 'Отель',
 };
 
-function renderElement (el, value, added = true) {
+const renderElement = (el, value, added = true) => {
   if (value && added) {
     el.textContent = value;
   } else {
     el.remove();
   }
-}
+};
 
-function createAdvertElement(ad) {
+const createAdvertElement = (ad) => {
   const advertsElement = popupAdvertsTemplate.cloneNode(true);
 
   renderElement(advertsElement.querySelector('.popup__title'), ad.offer.title);
@@ -75,6 +74,6 @@ function createAdvertElement(ad) {
   }
 
   return advertsElement;
-}
+};
 
 export {createAdvertElement};

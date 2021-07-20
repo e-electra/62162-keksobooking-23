@@ -1,7 +1,7 @@
 import {adFormSubmit, adFormReset, deactivatePage} from './form.js';
 import {resetMarker, map, markerGroup, mainPinMarker, initAdvertsOnMap, updateFilteredMarkers} from './map.js';
 import { getData } from './api.js';
-import {showSubmitSuccess, showSubmitError, showDataLoadError, removeNotifications} from './notifications.js';
+import {showSubmitSuccess, showSubmitError, showDataLoadError} from './notifications.js';
 import { ADVERTISEMENTS_STATE, SIMILAR_ADVERTISEMENT_COUNT } from './data.js';
 import { initFilters, filterAdverts, filtersForm, resetFilters } from './filters.js';
 
