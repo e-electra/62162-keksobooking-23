@@ -1,4 +1,5 @@
-import { MAX_HOUSING_PRICE, MIN_HOUSING_PRICE } from './data.js';
+import { MAX_HOUSING_PRICE, MIN_HOUSING_PRICE, ADVERTISEMENTS_STATE } from './data.js';
+import {updateFilteredMarkers, markerGroup} from './map.js';
 
 const FILTERS_VALUES_STATE = {
   housingType: 'any',
@@ -69,32 +70,6 @@ const setFeaturesFilter = () => {
   });
 };
 
-const initFilters = () => {
-  setHousingTypeFilter();
-  setHousingPriceFilter();
-  setHousingRoomsFilter();
-  setHousingGuestsFilter();
-  setFeaturesFilter();
-};
-
-const resetFilters = () => {
-  FILTERS_VALUES_STATE.housingType = 'any';
-  FILTERS_VALUES_STATE.housingPrice = 'any';
-  FILTERS_VALUES_STATE.housingRooms = 'any';
-  FILTERS_VALUES_STATE.housingGuests = 'any';
-  FILTERS_VALUES_STATE.housingFeatures = [];
-
-  housingTypeFilter.value = 'any';
-  housingPriceFilter.value = 'any';
-  housingRoomsFilter.value = 'any';
-  housingGuestsFilter.value = 'any';
-  housingFeaturesCheckBoxGroup.forEach((checkBox) => {
-    checkBox.checked = false;
-  });
-
-  filtersForm.dispatchEvent(new Event('change'));
-};
-
 const filterAdverts = (adverts) => {
   const {housingType, housingPrice, housingRooms, housingGuests, housingFeatures} = FILTERS_VALUES_STATE;
 
@@ -147,6 +122,39 @@ const filterAdverts = (adverts) => {
     && filterByRooms(adv)
     && filterByGuests(adv)
     && filterByFeatures(adv));
+};
+
+const onChangeFiltersForm = () => {
+  const filteredAdverts = filterAdverts(ADVERTISEMENTS_STATE.advertisements);
+  updateFilteredMarkers(markerGroup, filteredAdverts);
+};
+
+const initFilters = () => {
+  setHousingTypeFilter();
+  setHousingPriceFilter();
+  setHousingRoomsFilter();
+  setHousingGuestsFilter();
+  setFeaturesFilter();
+
+  filtersForm.addEventListener('change', onChangeFiltersForm);
+};
+
+const resetFilters = () => {
+  FILTERS_VALUES_STATE.housingType = 'any';
+  FILTERS_VALUES_STATE.housingPrice = 'any';
+  FILTERS_VALUES_STATE.housingRooms = 'any';
+  FILTERS_VALUES_STATE.housingGuests = 'any';
+  FILTERS_VALUES_STATE.housingFeatures = [];
+
+  housingTypeFilter.value = 'any';
+  housingPriceFilter.value = 'any';
+  housingRoomsFilter.value = 'any';
+  housingGuestsFilter.value = 'any';
+  housingFeaturesCheckBoxGroup.forEach((checkBox) => {
+    checkBox.checked = false;
+  });
+
+  filtersForm.dispatchEvent(new Event('change'));
 };
 
 export {filtersForm, initFilters, filterAdverts, resetFilters};

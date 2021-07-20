@@ -37,7 +37,4 @@ adFormReset();
 
 initFilters();
 
-filtersForm.addEventListener('change', () => {
-  const filteredAdverts = filterAdverts(ADVERTISEMENTS_STATE.advertisements);
-  updateFilteredMarkers(markerGroup, filteredAdverts);
-});
+
