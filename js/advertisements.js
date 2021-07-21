@@ -1,6 +1,6 @@
 const popupAdvertsTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-const advertTypes = {
+const AdvertTypes = {
   palace: 'Дворец',
   flat: 'Квартира',
   house: 'Дом',
@@ -22,7 +22,7 @@ const createAdvertElement = (ad) => {
   renderElement(advertsElement.querySelector('.popup__title'), ad.offer.title);
   renderElement(advertsElement.querySelector('.popup__text--address'), ad.offer.address);
   renderElement(advertsElement.querySelector('.popup__text--price'), `${ad.offer.price} ₽/ночь`, ad.offer.price);
-  renderElement(advertsElement.querySelector('.popup__type'), advertTypes[ad.offer.type]);
+  renderElement(advertsElement.querySelector('.popup__type'), AdvertTypes[ad.offer.type]);
 
   renderElement(
     advertsElement.querySelector('.popup__text--capacity'),
