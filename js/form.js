@@ -1,9 +1,23 @@
-
 import { mainPinMarker, map, resetMarker, getLatLngString} from './map.js';
 import { sendData } from './api.js';
 import {PHOTO_FILE_ALLOWED_TYPES, AUTHOR_PHOTO_IMG_PLACEHOLDER} from './data.js';
 import { createImageForPreview, updateImageSrc } from './utils/images.js';
 import {resetFilters} from './filters.js';
+
+const HousingPrices = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
+
+const MAX_PRICE_VALUE = 1000000;
+const MIN_TITLE_LENGTH = 30;
+const MAX_TITLE_LENGTH = 100;
+
+const HOUSE_PHOTO_IMG_ID = 'house-photo-image';
+const AUTHOR_PHOTO_IMG_ID = 'author-photo-image';
 
 const adForm = document.querySelector('.ad-form');
 const formElements = adForm.querySelectorAll('fieldset');
@@ -34,22 +48,6 @@ const housePhotoPreview = adForm.querySelector('.ad-form__photo');
 
 const authorPhotoInput = adForm.querySelector('#avatar');
 const authorPhotoPreview = adForm.querySelector('.ad-form-header__preview');
-
-const HOUSING_PRICES = {
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000,
-};
-
-
-const MAX_PRICE_VALUE = 1000000;
-const MIN_TITLE_LENGTH = 30;
-const MAX_TITLE_LENGTH = 100;
-
-const HOUSE_PHOTO_IMG_ID = 'house-photo-image';
-const AUTHOR_PHOTO_IMG_ID = 'author-photo-image';
 
 const deactivatePage = () => {
   adForm.classList.add('ad-form--disabled');
@@ -96,8 +94,8 @@ const onChangeTitle = (event) => {
 };
 
 const onChangeType = (evt) => {
-  priceInput.setAttribute('min', HOUSING_PRICES[evt.target.value]);
-  priceInput.setAttribute('placeholder', HOUSING_PRICES[evt.target.value]);
+  priceInput.setAttribute('min', HousingPrices[evt.target.value]);
+  priceInput.setAttribute('placeholder', HousingPrices[evt.target.value]);
 };
 
 const onChangePrice = (event) => {
@@ -234,7 +232,7 @@ const adFormReset = () => {
 
     titleInput.value = '';
     priceInput.value = '';
-    priceInput.setAttribute('placeholcer', HOUSING_PRICES.house);
+    priceInput.setAttribute('placeholcer', HousingPrices.house);
     roomsNumber.value = roomsNumber.querySelector('option[selected]').value;
     guestsNumber.value = roomsNumber.querySelector('option[selected]').value;
     typeSelect.value = typeSelect.querySelector('option[selected]').value;
