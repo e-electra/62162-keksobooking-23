@@ -166,7 +166,7 @@ const updatePhotoPreview = (file, id, container) => {
 };
 
 const resetPhotoPreview = (container, id, src = '') => {
-  const previewImg = container.getElementById(id);
+  const previewImg = container.querySelector(`#${id}`);
   if (previewImg) {
     previewImg.src = src;
     previewImg.width = 40;
@@ -227,8 +227,8 @@ const adFormReset = () => {
   adForm.addEventListener('reset', (event) => {
     event.preventDefault();
 
-    const authorPreviewImg = document.getElementById(AUTHOR_PHOTO_IMG_ID);
-    const housePhotoPreviewImg = document.getElementById(HOUSE_PHOTO_IMG_ID);
+    const authorPreviewImg = document.querySelector(`#${AUTHOR_PHOTO_IMG_ID}`);
+    const housePhotoPreviewImg = document.querySelector(`#${HOUSE_PHOTO_IMG_ID}`);
 
     titleInput.value = '';
     priceInput.value = '';
@@ -247,7 +247,7 @@ const adFormReset = () => {
     authorPreviewImg.src = AUTHOR_PHOTO_IMG_PLACEHOLDER;
 
     if (housePhotoPreviewImg) {
-      housePhotoPreviewImg.src = '';
+      housePhotoPreviewImg.remove();
     }
 
     resetMarker(mainPinMarker, map);
