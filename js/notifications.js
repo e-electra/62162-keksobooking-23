@@ -1,20 +1,33 @@
 const submitSuccessTemplate = document.querySelector('#success');
 const submitErrorTemplate = document.querySelector('#error');
 
-const onNotificationClickOrEscape = (event) => {
+const onNotificationKeyup = (event) => {
   const successElement = document.querySelector('.success');
   const errorElement = document.querySelector('.error');
-  const isClickOrEscape = event.type === 'click' || event.key === 'Escape';
+  const isEscapeKeyup = event.key === 'Escape';
 
-  if (successElement && isClickOrEscape) {
+  if (successElement && isEscapeKeyup) {
     successElement.remove();
   }
 
-  if (errorElement && isClickOrEscape) {
+  if (errorElement && isEscapeKeyup) {
     errorElement.remove();
   }
 
-  document.body.removeEventListener('keyup', onNotificationClickOrEscape);
+  document.body.removeEventListener('keyup', onNotificationKeyup);
+};
+
+const onNotificationClick = () => {
+  const successElement = document.querySelector('.success');
+  const errorElement = document.querySelector('.error');
+
+  if (successElement) {
+    successElement.remove();
+  }
+
+  if (errorElement) {
+    errorElement.remove();
+  }
 };
 
 
@@ -22,16 +35,16 @@ const showSubmitSuccess = () => {
   const successElement = submitSuccessTemplate.content.cloneNode(true);
   const mounted = document.body.appendChild(successElement.firstElementChild);
 
-  mounted.addEventListener('click', onNotificationClickOrEscape);
-  document.body.addEventListener('keyup', onNotificationClickOrEscape);
+  mounted.addEventListener('click', onNotificationClick);
+  document.body.addEventListener('keyup', onNotificationKeyup);
 };
 
 const showSubmitError = () => {
   const errorElement = submitErrorTemplate.content.cloneNode(true);
   const mounted = document.body.appendChild(errorElement.firstElementChild);
 
-  mounted.addEventListener('click', onNotificationClickOrEscape);
-  document.body.addEventListener('keyup', onNotificationClickOrEscape);
+  mounted.addEventListener('click', onNotificationClick);
+  document.body.addEventListener('keyup', onNotificationKeyup);
 };
 
 const showDataLoadError = (message, timeout) => {
