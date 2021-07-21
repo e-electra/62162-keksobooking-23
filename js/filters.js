@@ -10,12 +10,12 @@ const FILTERS_VALUES_STATE = {
 };
 
 const filtersForm = document.querySelector('.map__filters');
-const housingTypeFilter = filtersForm.querySelector('#housing-type');
-const housingPriceFilter = filtersForm.querySelector('#housing-price');
-const housingRoomsFilter = filtersForm.querySelector('#housing-rooms');
-const housingGuestsFilter = filtersForm.querySelector('#housing-guests');
-const housingFeaturesFilter = filtersForm.querySelector('#housing-features');
-const housingFeaturesCheckBoxGroup = housingFeaturesFilter.querySelectorAll('input[type="checkbox"]');
+const housingTypeFilterSelect = filtersForm.querySelector('#housing-type');
+const housingPriceFilterSelect = filtersForm.querySelector('#housing-price');
+const housingRoomsFilterSelect = filtersForm.querySelector('#housing-rooms');
+const housingGuestsFilterSelect = filtersForm.querySelector('#housing-guests');
+const housingFeaturesFilterElement = filtersForm.querySelector('#housing-features');
+const housingFeaturesCheckBoxGroup = housingFeaturesFilterElement.querySelectorAll('input[type="checkbox"]');
 
 const onChangeHousingTypeFilter = (event) => {
   const value = event.target.value;
@@ -49,19 +49,19 @@ const onChangeFeatureFilter = (event) => {
 };
 
 const setHousingTypeFilter = () => {
-  housingTypeFilter.addEventListener('change', onChangeHousingTypeFilter);
+  housingTypeFilterSelect.addEventListener('change', onChangeHousingTypeFilter);
 };
 
 const setHousingPriceFilter = () => {
-  housingPriceFilter.addEventListener('change', onChangeHousingPriceFilter);
+  housingPriceFilterSelect.addEventListener('change', onChangeHousingPriceFilter);
 };
 
 const setHousingRoomsFilter = () => {
-  housingRoomsFilter.addEventListener('change', onChangeHousingRoomsFilter);
+  housingRoomsFilterSelect.addEventListener('change', onChangeHousingRoomsFilter);
 };
 
 const setHousingGuestsFilter = () => {
-  housingGuestsFilter.addEventListener('change', onChangeHousingGuestsFilter);
+  housingGuestsFilterSelect.addEventListener('change', onChangeHousingGuestsFilter);
 };
 
 const setFeaturesFilter = () => {
@@ -146,10 +146,10 @@ const resetFilters = () => {
   FILTERS_VALUES_STATE.housingGuests = 'any';
   FILTERS_VALUES_STATE.housingFeatures = [];
 
-  housingTypeFilter.value = 'any';
-  housingPriceFilter.value = 'any';
-  housingRoomsFilter.value = 'any';
-  housingGuestsFilter.value = 'any';
+  housingTypeFilterSelect.value = 'any';
+  housingPriceFilterSelect.value = 'any';
+  housingRoomsFilterSelect.value = 'any';
+  housingGuestsFilterSelect.value = 'any';
   housingFeaturesCheckBoxGroup.forEach((checkBox) => {
     checkBox.checked = false;
   });

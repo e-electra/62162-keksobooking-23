@@ -37,12 +37,12 @@ const createAdvertElement = (ad) => {
   );
 
   const featureListElement = advertsElement.querySelector('.popup__features');
-  const featureItem = featureListElement.querySelectorAll('.popup__feature');
+  const featureItemElement = featureListElement.querySelectorAll('.popup__feature');
 
   if (ad.offer.features && ad.offer.features.length) {
     const modifires = ad.offer.features.map((feature) => `popup__feature--${feature}`);
 
-    featureItem.forEach((item) => {
+    featureItemElement.forEach((item) => {
       const modifer = item.classList[1];
 
       if(!modifires.includes(modifer)) {

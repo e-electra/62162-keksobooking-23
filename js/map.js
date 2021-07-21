@@ -2,8 +2,6 @@ import {createAdvertElement} from './advertisements.js';
 import {activatePage} from './form.js';
 import {throttle} from './utils/throttle.js';
 
-const addressInput = document.querySelector('#address');
-
 const CENTER_TOKIO_COORDINATES = {
   lat: 35.689500,
   lng: 139.691710,
@@ -22,6 +20,8 @@ const mainPinMarker = L.marker(
     icon: mainPinIcon,
   },
 );
+
+const addressInput = document.querySelector('#address');
 
 const createMarker = (advert, group) => {
   const icon = L.icon({

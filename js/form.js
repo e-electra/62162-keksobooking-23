@@ -22,57 +22,57 @@ const AUTHOR_PHOTO_IMG_ID = 'author-photo-image';
 const adForm = document.querySelector('.ad-form');
 const formElements = adForm.querySelectorAll('fieldset');
 
-const mapFilters = document.querySelector('.map__filters');
-const mapFieldset = mapFilters.querySelector('fieldset');
-const mapElements = mapFilters.querySelectorAll('select');
+const mapFiltersElement = document.querySelector('.map__filters');
+const mapFiltersFieldset = mapFiltersElement.querySelector('fieldset');
+const mapFiltersControlsElements = mapFiltersElement.querySelectorAll('select');
 
 const titleInput = adForm.querySelector('#title');
 const priceInput = adForm.querySelector('#price');
 
-const roomsNumber = adForm.querySelector('#room_number');
-const guestsNumber = adForm.querySelector('#capacity');
-const guestsOptions = Array.from(guestsNumber.querySelectorAll('option'))
+const roomsNumberSelect = adForm.querySelector('#room_number');
+const guestsNumberSelect = adForm.querySelector('#capacity');
+const guestsNumberSelectOptions = Array.from(guestsNumberSelect.querySelectorAll('option'))
   .filter((opt) => Number(opt.value) > 0)
   .sort((prev, next) => Number(prev.value) - Number(next.value))
   .map((opt) => opt.innerText);
 
 const typeSelect = adForm.querySelector('#type');
 
-const timeIn = adForm.querySelector('#timein');
-const timeOut = adForm.querySelector('#timeout');
+const timeInSelect = adForm.querySelector('#timein');
+const timeOutSelect = adForm.querySelector('#timeout');
 const featuresCheckboxGroup = adForm.querySelector('#features');
 const descriptionTextarea = adForm.querySelector('#description');
 const addressInput = adForm.querySelector('#address');
 const housePhotoInput = adForm.querySelector('#images');
-const housePhotoPreview = adForm.querySelector('.ad-form__photo');
+const housePhotoPreviewElement = adForm.querySelector('.ad-form__photo');
 
 const authorPhotoInput = adForm.querySelector('#avatar');
-const authorPhotoPreview = adForm.querySelector('.ad-form-header__preview');
+const authorPhotoPreviewElement = adForm.querySelector('.ad-form-header__preview');
 
 const deactivatePage = () => {
   adForm.classList.add('ad-form--disabled');
-  mapFilters.classList.add('map__filters--disabled');
-  mapFieldset.setAttribute('disabled', true);
+  mapFiltersElement.classList.add('map__filters--disabled');
+  mapFiltersFieldset.setAttribute('disabled', true);
 
   formElements.forEach((element) => {
     element.setAttribute('disabled', true);
   });
 
-  mapElements.forEach((element) => {
+  mapFiltersControlsElements.forEach((element) => {
     element.setAttribute('disabled', true);
   });
 };
 
 const activatePage = () => {
   adForm.classList.remove('ad-form--disabled');
-  mapFilters.classList.remove('map__filters--disabled');
-  mapFieldset.removeAttribute('disabled');
+  mapFiltersElement.classList.remove('map__filters--disabled');
+  mapFiltersFieldset.removeAttribute('disabled');
 
   formElements.forEach((element) => {
     element.removeAttribute('disabled');
   });
 
-  mapElements.forEach((element) => {
+  mapFiltersControlsElements.forEach((element) => {
     element.removeAttribute('disabled');
   });
 };
@@ -115,39 +115,39 @@ const onChangePrice = (event) => {
 };
 
 const onChangeRooms = () => {
-  const roomsValue = Number(roomsNumber.value);
-  const guestsValue = Number(guestsNumber.value);
+  const roomsValue = Number(roomsNumberSelect.value);
+  const guestsValue = Number(guestsNumberSelect.value);
 
   if (roomsValue === 100 && guestsValue > 0) {
-    roomsNumber.setCustomValidity(guestsNumber.querySelector('option[value="0"]').innerText);
+    roomsNumberSelect.setCustomValidity(guestsNumberSelect.querySelector('option[value="0"]').innerText);
   } else if (roomsValue < guestsValue || guestsValue === 0) {
-    roomsNumber.setCustomValidity(
-      guestsOptions.slice(0, roomsValue).join(' или\n'),
+    roomsNumberSelect.setCustomValidity(
+      guestsNumberSelectOptions.slice(0, roomsValue).join(' или\n'),
     );
   } else {
-    roomsNumber.setCustomValidity('');
+    roomsNumberSelect.setCustomValidity('');
   }
 
-  roomsNumber.reportValidity();
+  roomsNumberSelect.reportValidity();
 };
 
 const onChangeGuests = () => {
-  const guestsValue = Number(guestsNumber.value);
-  const roomsValue = Number(roomsNumber.value);
+  const guestsValue = Number(guestsNumberSelect.value);
+  const roomsValue = Number(roomsNumberSelect.value);
 
   if (roomsValue < 100 && guestsValue > 0 && guestsValue <= roomsValue) {
-    roomsNumber.setCustomValidity('');
+    roomsNumberSelect.setCustomValidity('');
   } else {
     onChangeRooms();
   }
 };
 
 const onChangeTimeOut = (evt) => {
-  timeOut.value = evt.target.value;
+  timeOutSelect.value = evt.target.value;
 };
 
 const onChangeTimeIn = (evt) => {
-  timeIn.value = evt.target.value;
+  timeInSelect.value = evt.target.value;
 };
 
 const validatePhoto = (file, input) => {
@@ -179,9 +179,9 @@ const onChangeHousePhoto = (event) => {
   const isFileValid = validatePhoto(file, event.target);
 
   if (isFileValid) {
-    updatePhotoPreview(event.target.files[0], HOUSE_PHOTO_IMG_ID, housePhotoPreview);
+    updatePhotoPreview(event.target.files[0], HOUSE_PHOTO_IMG_ID, housePhotoPreviewElement);
   } else {
-    resetPhotoPreview(housePhotoPreview, HOUSE_PHOTO_IMG_ID);
+    resetPhotoPreview(housePhotoPreviewElement, HOUSE_PHOTO_IMG_ID);
   }
 };
 
@@ -190,9 +190,9 @@ const onChangeAuthorPhoto = (event) => {
   const isFileValid = validatePhoto(file, event.target);
 
   if (isFileValid) {
-    updatePhotoPreview(event.target.files[0], AUTHOR_PHOTO_IMG_ID, authorPhotoPreview);
+    updatePhotoPreview(event.target.files[0], AUTHOR_PHOTO_IMG_ID, authorPhotoPreviewElement);
   } else {
-    resetPhotoPreview(authorPhotoPreview, AUTHOR_PHOTO_IMG_ID, AUTHOR_PHOTO_IMG_PLACEHOLDER);
+    resetPhotoPreview(authorPhotoPreviewElement, AUTHOR_PHOTO_IMG_ID, AUTHOR_PHOTO_IMG_PLACEHOLDER);
   }
 };
 
@@ -201,12 +201,12 @@ authorPhotoInput.addEventListener('change', onChangeAuthorPhoto);
 
 titleInput.addEventListener('input', onChangeTitle);
 priceInput.addEventListener('input', onChangePrice);
-roomsNumber.addEventListener('change', onChangeRooms);
-guestsNumber.addEventListener('change', onChangeGuests);
+roomsNumberSelect.addEventListener('change', onChangeRooms);
+guestsNumberSelect.addEventListener('change', onChangeGuests);
 
 typeSelect.addEventListener('change', onChangeType);
-timeIn.addEventListener('change', onChangeTimeOut);
-timeOut.addEventListener('change', onChangeTimeIn);
+timeInSelect.addEventListener('change', onChangeTimeOut);
+timeOutSelect.addEventListener('change', onChangeTimeIn);
 
 const adFormSubmit = (onSuccess, onFail) => {
   adForm.addEventListener('submit', (evt) => {
@@ -233,11 +233,11 @@ const adFormReset = () => {
     titleInput.value = '';
     priceInput.value = '';
     priceInput.setAttribute('placeholcer', HousingPrices.house);
-    roomsNumber.value = roomsNumber.querySelector('option[selected]').value;
-    guestsNumber.value = roomsNumber.querySelector('option[selected]').value;
+    roomsNumberSelect.value = roomsNumberSelect.querySelector('option[selected]').value;
+    guestsNumberSelect.value = roomsNumberSelect.querySelector('option[selected]').value;
     typeSelect.value = typeSelect.querySelector('option[selected]').value;
-    timeIn.value = timeIn.querySelector('option[selected]').value;
-    timeOut.value = timeOut.querySelector('option[selected]').value;
+    timeInSelect.value = timeInSelect.querySelector('option[selected]').value;
+    timeOutSelect.value = timeOutSelect.querySelector('option[selected]').value;
     descriptionTextarea.value = '';
     featuresCheckboxGroup.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
       checkbox.checked = false;
